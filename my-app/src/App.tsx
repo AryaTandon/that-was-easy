@@ -109,29 +109,44 @@ function App() {
     // setTimeout(() => console.log(count), 5000);
     alert(`that was ${identity}`);
     difficultyArr.map((i) => [i.color, i.color2] = [i.color2, i.color]);
+    const diffLabels = ["easy", "ok", "difficult", "too difficult"];
+    let countArr = [countEasy, countOk, countDifficult, countTooDifficult];
+    for (let n = 0; n <= 3; n++) {
+      // Removes smiley from identity
+      if (identity == diffLabels[n]+" :)") {
+        identity = diffLabels[n];
+      }
+      // Removes smileys from all the buttons
+      if ((difficultyArr[n].i).includes(" :)")) {
+        if (difficultyArr[n].i !== identity) {
+          difficultyArr[n].i = diffLabels[n];
+        }
+      }
+    }
+    console.log(identity)
     setCountOverall(countOverall + 1)
     switch(identity) {
-      case "easy" && "easy :)":
+      case "easy":
         setCountEasy(countEasy + 1);
+        countArr[0] += 1;
         break;
-      case "ok" && "ok :)":
+      case "ok":
         setCountOk(countOk + 1);
+        countArr[1] += 1;
         break;
-      case "difficult" && "difficult :)":
+      case "difficult":
         setCountDifficult(countDifficult + 1); 
+        countArr[2] += 1;
         break;
-      default:
+      case "too difficult":
         setCountTooDifficult(countTooDifficult + 1);
+        countArr[3] += 1;
+        break;
       }
-    console.log("hi!")
-    let countArr = [countEasy, countOk, countDifficult, countTooDifficult]
-    for (let n = 0; n < 3; n++) {
+    // Adds smiley to button(s) with highest count number
+    for (let n = 0; n <= 3; n++) {
       if (countArr[n] == Math.max(...countArr)) {
-        if ((difficultyArr[n].i).includes(" :)")) {
-        } else {
-        difficultyArr[n].i = (difficultyArr[n].i).concat(" :)");
-        };
-        console.log(difficultyArr[n].i);
+          difficultyArr[n].i += " :)";
       }
     }
   }
