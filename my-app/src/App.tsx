@@ -79,94 +79,110 @@ import ReactDOM from 'react-dom';
 
 // renderApp()
 
-const difficultyArr = [
-  {i: "easy",
-  color: "green",
-  color2: "red"}, 
-  {i: "ok",
-  color: "yellow",
-  color2: "orange"}, 
-  {i: "difficult",
-  color: "orange",
-  color2: "yellow"},
-  {i: "too difficult",
-  color: "red",
-  color2: "green"}
-];
-
 function App() {
-  const [count, setCount] = React.useState(false);
+  const [countTruth, setCount] = React.useState(false);
   const [countOverall, setCountOverall] = React.useState(0);
   const [countEasy, setCountEasy] = React.useState(0);
   const [countOk, setCountOk] = React.useState(0);
   const [countDifficult, setCountDifficult] = React.useState(0);
   const [countTooDifficult, setCountTooDifficult] = React.useState(0);
 
-  const alertCaller = (identity: string) => {
-    // console.log(count);
-    // count == false ? setCount(true) : setCount(false);
-    setCount(!count)
-    // setTimeout(() => console.log(count), 5000);
-    alert(`that was ${identity}`);
-    difficultyArr.map((i) => [i.color, i.color2] = [i.color2, i.color]);
-    const diffLabels = ["easy", "ok", "difficult", "too difficult"];
-    let countArr = [countEasy, countOk, countDifficult, countTooDifficult];
-    for (let n = 0; n <= 3; n++) {
-      // Removes smiley from identity
-      if (identity == diffLabels[n]+" :)") {
-        identity = diffLabels[n];
-      }
-      // Removes smileys from all the buttons
-      if ((difficultyArr[n].i).includes(" :)")) {
-        if (difficultyArr[n].i !== identity) {
-          difficultyArr[n].i = diffLabels[n];
-        }
-      }
+  const difficultyArr = [
+    {
+      i: "easy",
+      color: "green",
+      color2: "red",
+      count: countEasy,
+    }, 
+    {
+      i: "ok",
+      color: "yellow",
+      color2: "orange",
+      count: countOk,
+    }, 
+    {
+      i: "difficult",
+      color: "orange",
+      color2: "yellow",
+      count: countDifficult,
+    },
+    {
+      i: "too difficult",
+      color: "red",
+      color2: "green",
+      count: countTooDifficult
     }
-    console.log(identity)
+  ];
+
+  const alertCaller = (identity: string) => {
+    // count == false ? setCount(true) : setCount(false);
+    setCount(!countTruth)
+    alert(`that was ${identity}`);
     setCountOverall(countOverall + 1)
+    // difficultyArr.map((i) => [i.color, i.color2] = [i.color2, i.color]);
+    // const diffLabels = ["easy", "ok", "difficult", "too difficult"];
+    // let countArr = [countEasy, countOk, countDifficult, countTooDifficult];
+    // for (let n = 0; n <= 3; n++) {
+    //   // Removes smiley from identity
+    //   if (identity == diffLabels[n]+" :)") {
+    //     identity = diffLabels[n];
+    //   }
+    //   // Removes smileys from all the buttons
+    //   if ((difficultyArr[n].i).includes(" :)")) {
+    //     if (difficultyArr[n].i !== identity) {
+    //       difficultyArr[n].i = diffLabels[n];
+    //     }
+    //   }
+    // }
+    // console.log(identity)
     switch(identity) {
       case "easy":
         setCountEasy(countEasy + 1);
-        countArr[0] += 1;
+        // countArr[0] += 1;
         break;
       case "ok":
         setCountOk(countOk + 1);
-        countArr[1] += 1;
+        // countArr[1] += 1;
         break;
       case "difficult":
         setCountDifficult(countDifficult + 1); 
-        countArr[2] += 1;
+        // countArr[2] += 1;
         break;
       case "too difficult":
         setCountTooDifficult(countTooDifficult + 1);
-        countArr[3] += 1;
+        // countArr[3] += 1;
         break;
       }
-    // Adds smiley to button(s) with highest count number
-    for (let n = 0; n <= 3; n++) {
-      if (countArr[n] == Math.max(...countArr)) {
-          difficultyArr[n].i += " :)";
-      }
-    }
+    // // Adds smiley to button(s) with highest count number
+    // for (let n = 0; n <= 3; n++) {
+    //   if (countArr[n] == Math.max(...countArr)) {
+    //       difficultyArr[n].i += " :)";
+    //   }
+    // }
+  }
+  
+  // const buttonMaker = ( {i, color} : {i: string, color: string} ) => {
+  //   return ( <button className={`button ${color}`} onClick = {() => 
+  //   alertCaller(i)}>{i}</button> )
+  // }
+
+  const buttonMaker = ( {i, color, color2, count} : {i: string, color: string, color2: string, count: number} ) => {
+    const all = [countEasy, countOk, countDifficult, countTooDifficult];
+    const largest = Math.max(...all);
+    return largest === count && largest !== 0 ? 
+        <button className={`button ${countTruth?color:color2}`} onClick = {() => 
+        alertCaller(i)}>{i} :)</button>
+        : <button className={`button ${countTruth?color:color2}`} onClick = {() => 
+        alertCaller(i)}>{i}</button> 
   }
 
-  // const switchColors = ( {color, color2 = color2, color}) => {
-  //   let {i, color, color2} : {i: string, color: string, color2: string};
-  //   color, color2 = color2, color 
-  // }
-  
-  const buttonMaker = ( {i, color} : {i: string, color: string} ) => {
-    return ( <button className={`button ${color}`} onClick = {() => 
-    alertCaller(i)}>{i}</button> )
-  }
 
   const buttons = difficultyArr.map(buttonMaker);
 
   return (
     <div className="widerBox">
       {buttons}
-      <h1>{`${count}`}</h1>
+      <h1>{`${countTruth}`}</h1>
       <h1>{`The number of clicks in total is ${countOverall}`}</h1>
       <h1>{`The number of clicks on Easy is ${countEasy}`}</h1>
       <h1>{`The number of clicks in OK is ${countOk}`}</h1>
