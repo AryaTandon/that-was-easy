@@ -22,7 +22,6 @@ function App() {
   function addItem () {
     const addInfo = [item, quantity, unit];
     setList([...list, addInfo]);
-    console.log(list)
   }
 
   function deleteItem (index: number) {
@@ -32,7 +31,9 @@ function App() {
   }
 
   function showList ( [ item, quantity, unit ]: string[], index: number ) {
-    return (
+    
+    return ( 
+    (item && quantity && unit) ? 
     <div>
       <p>{item}</p>
       <p>{quantity}</p>
@@ -40,10 +41,11 @@ function App() {
       <button onClick = {() => deleteItem(index)}> Delete item </button>
       <hr />
     </div>
+    : null
     )
   }
 
-  mappedList = list.map(showList)
+  mappedList = list.map(showList);
 
   return (
     <div>
