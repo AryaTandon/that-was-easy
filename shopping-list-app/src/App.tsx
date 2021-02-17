@@ -9,6 +9,7 @@ function App() {
   const [quantity, setQuantity] = useState('');
   const [list, setList] = useState([['']]);
   const [unit, setUnit] = useState("kilo");
+  const [error, setError] = useState('');
 
   function handleChange( event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> ) {
     console.log(event);
@@ -20,8 +21,14 @@ function App() {
   }
 
   function addItem () {
-    const addInfo = [item, quantity, unit];
-    setList([...list, addInfo]);
+    if (parseInt(quantity) > 100) {
+      setError("Quantity can't be greater than 100!");
+    }
+    else {
+      setError("");
+      const addInfo = [item, quantity, unit];
+      setList([...list, addInfo]);
+    }
   }
 
   function deleteItem (index: number) {
@@ -39,6 +46,14 @@ function App() {
       <p>{quantity}</p>
       <p>{unit}</p>
       <button onClick = {() => deleteItem(index)}> Delete item </button>
+      <p>
+      <label>
+        Purchased?
+        <input 
+        type="checkbox" 
+        value="purchased" /> 
+      </label>
+      </p>
       <hr />
     </div>
     : null
@@ -66,6 +81,7 @@ function App() {
             onChange={handleChange} />
         </label>
         <br />
+        <p>{error}</p>
         <label>
           Pick a unit:
             <select name="Dropdown" onChange={handleChange}>
